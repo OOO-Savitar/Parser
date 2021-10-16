@@ -73,7 +73,7 @@ class Save:
             self.cursor.execute("INSERT INTO Cards VALUES(NULL, ?, ?, ?, ?, ?)", card)
             self.conn.commit()
 
-
+# Мы не используем это в дальнейшем
 def save_csv(items, path):
     with open(path, 'a', newline='') as file:
         writer = csv.writer(file, delimiter=';')

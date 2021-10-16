@@ -58,19 +58,19 @@ class Save:
 
         self.cursor.execute("""
                         CREATE TABLE IF NOT EXISTS Cards
-                        (id integer, title text, price integer, property_1 text, image_link text, prod_link text)
+                        (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, title text, price integer, property_1 text, image_link text, prod_link text)
                         """)
 
     def SQL(self, items):
         for item in items:
-            card = (item['id'],
+            card = (
                     item['title'],
                     item['price'],
                     item['property_1'],
                     item['image_link'],
                     item['prod_link'])
 
-            self.cursor.execute("INSERT INTO Cards VALUES(?, ?, ?, ?, ?, ?)", card)
+            self.cursor.execute("INSERT INTO Cards VALUES(NULL, ?, ?, ?, ?, ?)", card)
             self.conn.commit()
 
 
@@ -79,7 +79,8 @@ def save_csv(items, path):
         writer = csv.writer(file, delimiter=';')
 
         for item in items:
-            writer.writerow([item['title'],
+            writer.writerow([item['id'],
+                             item['title'],
                              item['price'],
                              item['property_1'],
                              item['image_link'],
@@ -91,7 +92,6 @@ def parse(html):
     items = soup.find_all('div', class_='col-tile')
 
     cards = []
-    f = 0
 
     try:
         for item in items:
@@ -117,14 +117,12 @@ def parse(html):
                 prod_link = '-'
 
             cards.append({
-                'id'        : f,
                 'title'     : title,
                 'price'     : price,
                 'property_1': property_1,
                 'image_link': image_link,
                 'prod_link' : prod_link
             })
-            f += 1
     except:
         print('\t\tКонец страницы')
 

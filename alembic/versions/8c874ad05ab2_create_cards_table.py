@@ -18,8 +18,13 @@ depends_on = None
 
 def upgrade():
     op.create_table(
-        'Cards',
-        sa.Column('title', sa.Integer)
+        'Cards_1',
+        sa.Column('id', sa.Integer),
+        sa.Column('title', sa.String(512)),
+        sa.Column('price', sa.Integer),
+        sa.Column('property_1', sa.String(512)),
+        sa.Column('image_link', sa.String(512)),
+        sa.Column('prod_link', sa.String(512))
     )
 
 

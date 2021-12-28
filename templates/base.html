@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    {% block title %} {% endblock %}
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <!-- FONTS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" rel="stylesheet">
+
+    <!-- JavaScript Bundle with Popper -->
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+    <!-- CSS only -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main_style.css') }}">
+
+    <!-- ICONS FONTAWESOME -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    {% block header %} 
+    <header>
+        <div class="navbar navbar-dark bg-dark shadow-sm">
+            <div class="container">
+                <a href="#" class="navbar-brand d-flex align-items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true" class="me-2" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+                    <strong>Album</strong>
+                </a>
+                <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+    {% endblock %}
+
+    <div class="container">
+        <div class="row mt-5">
+			<div class="list">
+				<form method="post">
+					<div class="middle">
+						<div class="row">
+							<div class="col-2"></div>
+							<div class="col-8 d-flex" style="font-size: 1.4em;">
+								<p>Выбрать по:</p>
+								<select class="form-select" style="width: 60%;" name="selectedValue" id="selectedValue" 	onchange="getComboA(this);" aria-label="Default select 	example">
+	  								<option value="1" selected>id</option>
+	  								<option value="2">Наименованию</option>
+								</select>
+							</div>
+							<div class="col-2"></div>
+						</div>
+
+					<div class="row">
+						<div class="col-2"></div>
+						<div class="col-8 d-flex" style="font-size: 1.4em;">
+							<p>Поле ввода:</p>
+							<input class="form-control inputType" style="width: 60%;" name="Value" id="Value"	  type="text"  placeholder="Параметры поиска" value={{ value }} 	aria-label="deafult input example">
+						</div>
+						<div class="col-2"></div>
+					</div>
+					<div class="row mt-1">
+						<div class="col-4"></div>
+						<div class="col-4">
+							<input type="submit" onclick="Check()" style="width: 100%;" class="btn btn-primary" value="Поиск">
+						</div>
+						<div class="col-4"></div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+        {% block section_one %} {% endblock %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+</body>
+</html>

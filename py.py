@@ -62,21 +62,23 @@ class Save:
 
         self.cursor.execute("""
                         CREATE TABLE IF NOT EXISTS Cards
-                        (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, title text, price integer, property_1 text, 
+                        (id text PRIMARY KEY NOT NULL, title text, price integer, property_1 text,
                         image_link text, prod_link text)
                         """)
 
     def SQL(self, items):
         for item in items:
-            card = (
-                item['title'],
-                item['price'],
-                item['property_1'],
-                item['image_link'],
-                item['prod_link'])
+            if item['id'] != '-':
+                card = (
+                    item['id'],
+                    item['title'],
+                    item['price'],
+                    item['property_1'],
+                    item['image_link'],
+                    item['prod_link'])
 
-            self.cursor.execute("INSERT INTO Cards VALUES(NULL, ?, ?, ?, ?, ?)", card)
-            self.conn.commit()
+                self.cursor.execute("INSERT INTO Cards VALUES(?, ?, ?, ?, ?, ?)", card)
+                self.conn.commit()
 
 
 # Мы не используем это в дальнейшем
@@ -101,6 +103,10 @@ def parse(html):
 
     try:
         for item in items:
+            try:
+                id = item.find('span', class_='ty-control-group__item').get_text()
+            except:
+                id = '-'
             try:
                 title = item.find('div', class_='ty-grid-list__item-name').find('a').get_text()
             except:
@@ -127,6 +133,7 @@ def parse(html):
             new_price = "".join([i for i in price if i.isdigit()])
 
             cards.append({
+                'id': id,
                 'title': title,
                 'price': new_price,
                 'property_1': property_1,

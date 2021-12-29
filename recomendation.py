@@ -24,7 +24,7 @@ def FindPatter(card):
     title = title.split('/')
 
     rem_mas = [1, 0, -1]
-    [title.pop(i) for i in range(0, len(title)-1) if len(title[i]) == 0]
+    [title.pop(i) for i in range(0, len(title) - 1) if len(title[i]) == 0]
     [title.pop(i) for i in rem_mas]
 
     for el in title:
@@ -40,26 +40,17 @@ def FindPatter(card):
 @app.route('/', methods=['POST', 'GET'])
 def index():
     if request.method == 'POST':
-        selected = request.form['selectedValue']
         value = request.form['Value']
         cards = []
 
         if len(value) > 0:
-            if int(selected) == 1 and 0 < int(value) < Cards.query.count():
-                # cards = Cards.query.limit(10).all()
-                cards = Cards.query.filter_by(id=value).all()
-                if str(cards[0].title) != '-':
-                    cards = FindPatter(cards)
-                else:
-                    value = int(value) + 1
-                    cards = Cards.query.filter_by(id=value).all()
-                    cards = FindPatter(cards)
-            else:
-                pass
+            # cards = Cards.query.limit(10).all()
+            cards = Cards.query.filter_by(id=value).all()
+            cards = FindPatter(cards)
 
-        return render_template('index.html', cards=cards, value=value, selected=selected)
+        return render_template('index.html', cards=cards, value=value)
     else:
-        return render_template('index.html')
+        return render_template('base.html')
 
 
 def main():

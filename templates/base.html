@@ -47,34 +47,22 @@
 			<div class="list">
 				<form method="post">
 					<div class="middle">
-						<div class="row">
-							<div class="col-2"></div>
-							<div class="col-8 d-flex" style="font-size: 1.4em;">
-								<p>Выбрать по:</p>
-								<select class="form-select" style="width: 60%;" name="selectedValue" id="selectedValue" 	onchange="getComboA(this);" aria-label="Default select 	example">
-	  								<option value="1" selected>id</option>
-	  								<option value="2">Наименованию</option>
-								</select>
-							</div>
-							<div class="col-2"></div>
-						</div>
-
-					<div class="row">
-						<div class="col-2"></div>
-						<div class="col-8 d-flex" style="font-size: 1.4em;">
-							<p>Поле ввода:</p>
-							<input class="form-control inputType" style="width: 60%;" name="Value" id="Value"	  type="text"  placeholder="Параметры поиска" value={{ value }} 	aria-label="deafult input example">
-						</div>
-						<div class="col-2"></div>
-					</div>
-					<div class="row mt-1">
-						<div class="col-4"></div>
-						<div class="col-4">
-							<input type="submit" onclick="Check()" style="width: 100%;" class="btn btn-primary" value="Поиск">
-						</div>
-						<div class="col-4"></div>
-						</div>
-					</div>
+					       <div class="row">
+					       	<div class="col-2"></div>
+					       	<div class="col-8 d-flex" style="font-size: 1.4em;">
+					       		<p>Поле ввода:</p>
+					       		<input class="form-control inputType" style="width: 60%;" name="Value" id="Value"	  type="text"  placeholder="Параметры поиска" value={{ value }}>
+					       	</div>
+					       	<div class="col-2"></div>
+					       </div>
+					       <div class="row mt-1">
+					       	<div class="col-4"></div>
+					       	<div class="col-4">
+					       		<input type="submit" onclick="Check()" style="width: 100%;" class="btn btn-primary" value="Поиск">
+					       	</div>
+					       	<div class="col-4"></div>
+					       	</div>
+					       </div>
 				</form>
 			</div>
 		</div>

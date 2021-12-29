@@ -48,7 +48,7 @@
 			</h1>
 		</div>
 		{% for el in range(1, cards|length) %}
-			<div class="col-lg-3 col-md-4 mt-4">
+			<div class="col-lg-3 col-md-4 mt-4 {{ cards[el].id }}">
 				<div class="card card-cover" id="card">
 					{% if cards[el].image_link == '-' %}
 						<img src="static/img/image-not-found.png" class="card-img-top" style="height: 205px;" alt="...">
@@ -82,11 +82,16 @@
 	<div class="row">
 		<div id="form-card">
 			<div id="form-card-show">
-  				<div class="row form-img" style="height: 50%; width: 100%;">
-  						<img src="/static/img/body-bck-2.jpg" alt="">
+  				<div class="row form-img">
+  					<p onclick="closeForm()">
+  						<i class="fas fa-times-circle text-center"></i>
+  					</p>
+  					<div class="img">
+  						<img class="mt-5" src="/static/img/body-bck-2.jpg" alt="">
+  					</div>
   				</div>
   				<div class="row form-descript" style="height: 50%; width: 100%;">
-  					gfdg
+  					
   				</div>
 			</div>
 		</div>

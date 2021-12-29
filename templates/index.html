@@ -5,34 +5,90 @@
 {% endblock %}
 
 {% block section_one %}
-	<div class="row col-12 m-auto">
-		{% for el in cards %}
+	<div class="row col-12 m-auto mt-5 pt-3 pb-4" style="width: 100%; height: 100%; background: rgba(255, 200, 255, 0.5); border-radius: 10px;">
+		<div class="row text-center">
+			<h1>
+				Выбранный товар:
+			</h1>
+		</div>
+		<div class="col-lg-3 col-md-4">
+			<div class="card card-cover" id="card_1">
+				{% if cards[0].image_link == '-' %}
+				<img src="static/img/image-not-found.png" class="card-img-top" style="height: 205px;" alt="...">
+				{% else %}
+				<img src={{ cards[0].image_link }} class="card-img-top" style="height: 205px;" alt="...">
+				{% endif %}
+				<div class="card-body">
+					<div class="sv-card" style="height: 48px; overflow: hidden;">
+						<p class="card-text">{{ cards[0].title }}</p>
+					</div>
+					<div class="text-center">
+						<h5 class="card-title">{{ cards[0].price }} руб.</h5>
+					</div>
+					<div class="d-flex">
+						<a href={{ cards[0].prod_link }} 	class="btn btn-success" style="width: 70%; border-radius: 25px; 	padding: 10px 0	;">В магазин</a>
+						<div class="circle" id={{ cards[0].id }} onclick='ShowForm(this)'>
+							<i class="fas fa-eye"></i>
+						</div>
+					</div>
+					<div class="row mt-2">
+						<p class="card-text">{{ cards[0].property_1 }}</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block section_two %}
+	<div class="row col-12 m-auto mt-5">
+		<div class="row text-center">
+			<h1>
+				Похожие товары:
+			</h1>
+		</div>
+		{% for el in range(1, cards|length) %}
 			<div class="col-lg-3 col-md-4 mt-4">
-				<div class="card" id="card" style="width: 100%; background: rgba(255, 255, 255, 0.7);">
-					{% if el.image_link == '-' %}
+				<div class="card card-cover" id="card">
+					{% if cards[el].image_link == '-' %}
 						<img src="static/img/image-not-found.png" class="card-img-top" style="height: 205px;" alt="...">
 					{% else %}
-						<img src={{ el.image_link }} class="card-img-top" style="height: 205px;" alt="...">
+						<img src={{ cards[el].image_link }} class="card-img-top" style="height: 205px;" alt="...">
 					{% endif %}
 	  				<div class="card-body">
 	  					<div class="sv-card" style="height: 48px; overflow: hidden;">
-	    					<p class="card-text">{{ el.title }}</p>
+	    					<p class="card-text">{{ cards[el].title }}</p>
 	    				</div>
 	    				<div class="text-center">
-	    					<h5 class="card-title">{{ el.price }} руб.</h5>
+	    					<h5 class="card-title">{{ cards[el].price }} руб.</h5>
 	    				</div>
 	    				<div class="d-flex">
-	    					<a href={{ el.prod_link }} 	class=	"btn btn-success" style="width: 70%; border-radius: 25px; 	padding: 10px 0	;">В магазин</a>
-	    					<div class="circle" id={{ el.id }} onclick='ShowForm(this)'>
+	    					<a href={{ cards[el].prod_link }} 	class=	"btn btn-success" style="width: 70%; border-radius: 25px; 	padding: 10px 0	;">В магазин</a>
+	    					<div class="circle" id={{ cards[el].id }} onclick='ShowForm(this)'>
 	    						<i class="fas fa-eye"></i>
 	    					</div>
 	    				</div>
 	    				<div class="row mt-2">
-	    					<p class="card-text">{{ el.property_1 }}</p>
+	    					<p class="card-text">{{ cards[el].property_1 }}</p>
 	    				</div>
 	  				</div>
 	  			</div>
 			</div>
 		{% endfor %}
+	</div>
+{% endblock %}
+
+{% block section_form %}
+	<div class="row">
+		<div id="form-card">
+			<div id="form-card-show">
+  				<div class="row form-img" style="height: 50%; width: 100%;">
+  						<img src="/static/img/body-bck-2.jpg" alt="">
+  				</div>
+  				<div class="row form-descript" style="height: 50%; width: 100%;">
+  					gfdg
+  				</div>
+			</div>
+		</div>
 	</div>
 {% endblock %}

@@ -73,5 +73,44 @@ body {
     top: 50%;
     left: 50%;
     margin-right: -50%;
-    transform: translate(-50%, -50%) }
+    transform: translate(-50%, -50%); 
+}
+
+.card-body {
+    width: 100%;
+}
+
+.card-cover {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.7);
+    transition: 0.5s;
+}
+
+.card-cover:hover {
+    transform: scale(1.05);
+    z-index: 1000;
+}
+
+#form-card {
+    z-index: 10000;
+    border-radius: 10px;
+    position: fixed; /* or absolute */
+    top: 50%;
+    left: 50%;
+    width: 50%;
+    height: 60%;
+    margin: -30% 0 0 -25%;
+    background: #fdf;
+    padding: 0;
+}
+
+#form-card-show {
+    margin-top: 20px;
+    margin-left: 12px;
+    width: 100%;
+}
+
+#form-card-show .form-img {
+    padding-bottom: 10px;
+    border-bottom:  2px solid #fff;
 }

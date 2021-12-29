@@ -48,8 +48,12 @@ def index():
             if int(selected) == 1 and 0 < int(value) < Cards.query.count():
                 # cards = Cards.query.limit(10).all()
                 cards = Cards.query.filter_by(id=value).all()
-                cards = FindPatter(cards)
-
+                if str(cards[0].title) != '-':
+                    cards = FindPatter(cards)
+                else:
+                    value = int(value) + 1
+                    cards = Cards.query.filter_by(id=value).all()
+                    cards = FindPatter(cards)
             else:
                 pass
 

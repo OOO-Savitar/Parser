@@ -14,7 +14,7 @@ window.onload = function() {
 }
 
 function ShowForm(selectCard) {
-	console.log(selectCard)
+	alert(selectCard)
 }
 
 function Check() {

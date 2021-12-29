@@ -11,8 +11,10 @@ from bs4 import BeautifulSoup as BS
 from rich import print
 
 headers = {
-    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 YaBrowser/21.8.3.614 Yowser/2.5 Safari/537.36",
-    "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9"
+    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
+                  "Chrome/92.0.4515.159 YaBrowser/21.8.3.614 Yowser/2.5 Safari/537.36",
+    "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,"
+              "application/signed-exchange;v=b3;q=0.9"
 }
 url = 'https://hi-tech.md'
 
@@ -21,12 +23,13 @@ page_cards = []
 frequency = 2500
 duration = 200
 
-def get_html(url):
+
+def get_html(url_http):
     try:
-        request = requests.get(url=url, headers=headers)
+        request = requests.get(url=url_http, headers=headers)
         return request
     except:
-        print(f'Сайт {url} не отвечает.\nПроверьте ссылку на корректность!')
+        print(f'Сайт {url_http} не отвечает.\nПроверьте ссылку на корректность!')
         exit()
 
 
@@ -48,30 +51,35 @@ def timeit(func):
         result = func(*args, **kwargs)
         print(datetime.now() - start)
         return result
+
     return wrapper()
 
 
 class Save:
     def __init__(self):
-        self.conn = sqlite3.connect('myDatabase.db')
+        self.conn = sqlite3.connect('HiTech.db')
         self.cursor = self.conn.cursor()
 
         self.cursor.execute("""
                         CREATE TABLE IF NOT EXISTS Cards
-                        (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, title text, price integer, property_1 text, image_link text, prod_link text)
+                        (id text PRIMARY KEY NOT NULL, title text, price integer, property_1 text,
+                        image_link text, prod_link text)
                         """)
 
     def SQL(self, items):
         for item in items:
-            card = (
+            if item['id'] != '-':
+                card = (
+                    item['id'],
                     item['title'],
                     item['price'],
                     item['property_1'],
                     item['image_link'],
                     item['prod_link'])
 
-            self.cursor.execute("INSERT INTO Cards VALUES(NULL, ?, ?, ?, ?, ?)", card)
-            self.conn.commit()
+                self.cursor.execute("INSERT INTO Cards VALUES(?, ?, ?, ?, ?, ?)", card)
+                self.conn.commit()
+
 
 # Мы не используем это в дальнейшем
 def save_csv(items, path):
@@ -96,6 +104,10 @@ def parse(html):
     try:
         for item in items:
             try:
+                id = item.find('span', class_='ty-control-group__item').get_text()
+            except:
+                id = '-'
+            try:
                 title = item.find('div', class_='ty-grid-list__item-name').find('a').get_text()
             except:
                 title = '-'
@@ -104,7 +116,9 @@ def parse(html):
             except:
                 price = '-'
             try:
-                property_1 = item.find('span', class_='ty-product-feature__label').find('em', class_='abt-yt-feature-name').get_text() + item.find('span', class_='ty-control-group').find('em', attrs={'class': None}).get_text()
+                property_1 = item.find('span', class_='ty-product-feature__label').find('em',
+                     class_='abt-yt-feature-name').get_text() + ': ' + item.find(
+                    'span', class_='ty-control-group').find('em', attrs={'class': None}).get_text()
             except:
                 property_1 = '-'
             try:
@@ -116,12 +130,15 @@ def parse(html):
             except:
                 prod_link = '-'
 
+            new_price = "".join([i for i in price if i.isdigit()])
+
             cards.append({
-                'title'     : title,
-                'price'     : price,
+                'id': id,
+                'title': title,
+                'price': new_price,
                 'property_1': property_1,
                 'image_link': image_link,
-                'prod_link' : prod_link
+                'prod_link': prod_link
             })
     except:
         print('\t\tКонец страницы')
@@ -130,9 +147,8 @@ def parse(html):
 
 
 def main():
-    request = get_html(url=url)
+    request = get_html(url)
     links = []
-
 
     if request.status_code == 200:
         links = get_link(request)
@@ -145,7 +161,7 @@ def main():
     for link in links:
         page = 1
         new_url = url + link + 'page-' + str(page)  # https://hi-tech.md/bytovaya-tehnika/page-1/ - что получается
-        print(f'[blue]{url+link}[/blue] [magenta]-> request()\t{col}/{len(links)}[/magenta]')       #log
+        print(f'[blue]{url + link}[/blue] [magenta]-> request()\t{col}/{len(links)}[/magenta]')  # log
         while True:
             time_start = datetime.now()
             time_end = datetime.now()
@@ -153,7 +169,7 @@ def main():
                 time_start = datetime.now()
                 request = get_html(new_url)
                 time_end = datetime.now()
-            except Exception as ex:
+            except:
                 print('Нет ответа, либо достигнут конец!')
 
             if request.status_code != 200:
@@ -162,7 +178,7 @@ def main():
                 break
             elif request.status_code == 200:
                 print(f'[magenta]page {page}[/magenta][green]\t\tPARSE -> GOOD[/green]\t\t[red]elapsed: '
-                      f'{time_end -time_start}[/red]')
+                      f'{time_end - time_start}[/red]')
                 cards = parse(html=request)
                 # save_csv(cards, 'file.csv')
                 save = Save()
@@ -170,7 +186,7 @@ def main():
 
             page = page + 1
             new_url = url + link + 'page-' + str(page)
-    readDB.main()
+    # readDB.main()
 
 
 if __name__ == '__main__':
@@ -179,4 +195,4 @@ if __name__ == '__main__':
     main()
     time_end_run = datetime.now()
     winsound.Beep(frequency, duration)
-    print(f'Программа закончила работу.\nВремя выполнения составило{time_end_run-time_start_run}')
+    print(f'Программа закончила работу.\nВремя выполнения составило{time_end_run - time_start_run}')
